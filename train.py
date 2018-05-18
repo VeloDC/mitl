@@ -9,7 +9,7 @@ import torch.optim as optim
 from torch.optim import lr_scheduler
 import torchvision
 from torchvision import datasets, models, transforms
-import cPickle as pkò
+import cPickle as pkl
 
 import nets
 
