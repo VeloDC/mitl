@@ -44,7 +44,7 @@ data_transforms = {
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
-    'test': transforms.Compose([
+    'val': transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
@@ -57,13 +57,13 @@ data_transforms = {
 
 image_datasets = {x: datasets.ImageFolder(os.path.join(args.data_dir, x),
                                           data_transforms[t])
-                  for x, t in zip(['train', 'test'],['train', 'test'])}
+                  for x, t in zip(['train', 'val'],['train', 'val'])}
 dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x],
                                               batch_size=args.batch_size,
                                               shuffle=x=='train',
                                               num_workers=args.num_workers)
-               for x in (['train', 'test'])}
-dataset_sizes = {x: len(image_datasets[x])for x in ['train', 'test']}
+               for x in (['train', 'val'])}
+dataset_sizes = {x: len(image_datasets[x])for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
 
 
