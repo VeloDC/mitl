@@ -2,7 +2,7 @@
 JOB_NAME='cubs_quantized_resnet18'
 LOGDIR='./logs/'$JOB_NAME
 DATA_DIR='/home/antonio/Data/Datasets/cubs_cropped'
-MASK='QuantizedConv2d'
+MASK='QuantizedConv2d' # uno tra QuantizedConv2d o MaskedConv2d, oppure togliere per finetuning standard
 CLASSES=200
 LR=0.0001
 EPOCHS=30
