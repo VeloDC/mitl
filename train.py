@@ -29,6 +29,7 @@ parser.add_argument('--momentum', type=float, default=0.9)
 parser.add_argument('--step_size', type=int, default=10)
 parser.add_argument('--gamma', type=float, default=0.2, help='lr stepdown coefficient')
 parser.add_argument('--num_workers', type=int, default=4)
+parser.add_argument('--adam', action='store_true')
 args = parser.parse_args()
 
 print(args)
@@ -43,7 +44,7 @@ data_transforms = {
         transforms.RandomResizedCrop(224),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])]),
     'val': transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
@@ -97,12 +98,19 @@ if use_gpu:
 
 criterion = nn.CrossEntropyLoss()
 
+if args.mask is not None:
+    for name, parameter in model.named_parameters():
+        parameter.requires_grad = 'mask' in name or 'fc' in name
 params_to_optimize = [param for param in model.parameters() if param.requires_grad]
-optimizer_conv = optim.SGD(params_to_optimize, lr=args.lr, momentum=args.momentum)
+
+if args.adam:
+    optimizer_conv = optim.Adam(params_to_optimize, lr=args.lr)
+else:
+    optimizer_conv = optim.SGD(params_to_optimize, lr=args.lr, momentum=args.momentum)
 
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_conv, step_size=args.step_size, gamma=args.gamma)
 
-tt = TorchTraining(idra_model, logger_path=args.logdir)
+tt = TorchTraining(model, logger_path=args.logdir)
 
 
 ##################
