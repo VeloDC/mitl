@@ -121,7 +121,7 @@ class ResNet18_MultiSource(nn.Module):
         
         self.avgpool = main_branch.avgpool
         if num_classes is not None:
-            self.fc = nn.Linear(512, num_classes)
+            self.fc = nn.Linear(main_branch.fc.in_features, num_classes)
         else:
             self.fc = main_branch.fc
 
@@ -163,7 +163,7 @@ class ResNet50_MultiSource(nn.Module):
         
         self.avgpool = main_branch.avgpool
         if num_classes is not None:
-            self.fc = nn.Linear(512, num_classes)
+            self.fc = nn.Linear(main_branch.fc.in_features, num_classes)
         else:
             self.fc = main_branch.fc
 
