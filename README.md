@@ -1,2 +1,1 @@
-# mitl
-Multisource Incremental Task Learning
+# pytorch-template

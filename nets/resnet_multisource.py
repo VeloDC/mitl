@@ -3,8 +3,8 @@ import torch.nn as nn
 from torch.nn import ModuleList as ML
 from torch.nn import ParameterList as PL
 
-from mitl_layers import Filter_Sum_Forward
-from mitl_layers import MaskedConv2d
+from nets.mitl_layers import Filter_Sum_Forward
+from nets.mitl_layers import MaskedConv2d
 
 from torchvision.models import resnet
 
@@ -12,14 +12,14 @@ from torchvision.models import resnet
 __all__ = ['resnet18_multisource', 'resnet50_multisource']  
 
 
-def resnet18_multisource(nets=[], num_classes=None, masking_fn=lambda x: x):
-    main_branch = resnet.resnet18(pretrained=True)
+def resnet18_multisource(num_classes=None, nets=[], pretrained=False, masking_fn=lambda x: x):
+    main_branch = resnet.resnet18(pretrained=pretrained)
     full_model = ResNet18_MultiSource(main_branch, nets, num_classes=num_classes, masking_fn=masking_fn)
     return full_model
 
 
-def resnet50_multisource(nets=[], num_classes=None, masking_fn=lambda x: x):
-    main_branch = resnet.resnet50(pretrained=True)
+def resnet50_multisource(num_classes=None, nets=[], pretrained=False, masking_fn=lambda x: x):
+    main_branch = resnet.resnet50(pretrained=pretrained)
     full_model = ResNet50_MultiSource(main_branch, nets, num_classes=num_classes, masking_fn=masking_fn)
     return full_model
 

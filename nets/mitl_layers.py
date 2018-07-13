@@ -78,8 +78,8 @@ class QuantizedConv2d(nn.modules.conv.Conv2d):
     '''
     (come MaskedConv2d)
     '''
-    def __init__(self, conv):        
-	super(QuantizedConv2d, self).__init__(conv.in_channels, conv.out_channels, conv.kernel_size,
+    def __init__(self, conv):
+        super(QuantizedConv2d, self).__init__(conv.in_channels, conv.out_channels, conv.kernel_size,
                                               conv.stride, conv.padding, conv.dilation,
                                               conv.groups, conv.bias)
         self.weight = conv.weight
