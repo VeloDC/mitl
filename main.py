@@ -22,6 +22,8 @@ def parse():
     parser.add_argument('--dataloader', type=str, default='standard_dataloader')
     parser.add_argument('--model_name', type=str, default='resnet18_multisource')
     parser.add_argument('--pretrained', type=bool, default=True, help='Initialize from a pretrained model')
+    parser.add_argument('--side_branches', type=str,
+                        default='/home/antonio/logs-mitl/finetune_resnet18_cubs_1_cubs_resnet18_multisource_30_0.010000/cubs_resnet18_multisource_60_0.010000.pth')
     parser.add_argument('--transforms_name', type=str, default='imagenet')
     parser.add_argument('--training_fn', type=str, default='standard_training')
     parser.add_argument('--im_size', type=int, default=224)
@@ -77,6 +79,12 @@ def main():
     get_network_fn = nets_factory.get_network(model_name)
 
     num_classes = len(image_datasets['train'].classes) #UNSAFE
+    nets = []
+    for branch in args.side_branches.split(','):
+        net = torch.load(branch)
+        for param in net.parameters():
+            param.requires_grad = False
+        nets.append(net)
     model = get_network_fn(num_classes, pretrained=args.pretrained)
 
     ####################
